@@ -27,6 +27,10 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+# Pre-download the Hugging Face embedding model during build time
+# Pre-download the SentenceTransformer model during build time
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('intfloat/multilingual-e5-small')"
+
 
 # Pre-download the embedding model during the build (network access
 # is available at build time on every platform we've tried, unlike
