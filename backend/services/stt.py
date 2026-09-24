@@ -1,4 +1,4 @@
-﻿"""
+"""
 Speech-to-text via ElevenLabs (settings.stt_provider == "elevenlabs").
 Verified against the installed `elevenlabs` SDK's real interface
 (elevenlabs==2.64.0): client.speech_to_text.convert(model_id=...,

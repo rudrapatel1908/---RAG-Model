@@ -29,9 +29,9 @@ class Settings(BaseSettings):
 
     # --- Retrieval ---
     served_strategy: str = "sentence"
-    vector_top_k: int = 5
-    vector_top_k: int = 5
-    bm25_top_k: int = 5
+    vector_top_k: int = 10
+    vector_top_k: int = 10
+    bm25_top_k: int = 10
     fusion_top_k: int = 5
     rrf_k: int = 60  # standard RRF constant
     max_query_chars: int = 512
@@ -68,7 +68,7 @@ class Settings(BaseSettings):
     max_retries: int = 2
 
     class Config:
-        env_file = str(Path(__file__).resolve().parent / ".env")
+        env_file = ".env"
         env_file_encoding = "utf-8"
 
 

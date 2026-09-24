@@ -5,24 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>श्रवण · Voice RAG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Sora:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0E0F13;
-    --surface: #171A21;
-    --surface-raised: #1F232C;
-    --border: #2A2E38;
-    --text: #EDEBE4;
-    --text-muted: #8B8F9C;
-    --accent: #7C6FEF;
-    --accent-soft: rgba(124, 111, 239, 0.15);
-    --wave: #2DD4BF;
-    --ok: #4ADE80;
-    --warn: #FBBF24;
-    --danger: #F87171;
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Manrope', sans-serif;
-    --font-deva: 'Noto Sans Devanagari', 'Manrope', sans-serif;
+    --bg: #0B1A24;
+    --surface: #142A30;
+    --surface-raised: #1B363D;
+    --border: #24434A;
+    --text: #F3ECDD;
+    --text-muted: #8FA8AC;
+    --accent: #FF8A3D;
+    --accent-soft: rgba(255, 138, 61, 0.14);
+    --tile: #3E7CB8;
+    --ok: #4FD1A5;
+    --warn: #FFB454;
+    --danger: #E85D4C;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Sora', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-deva: 'Noto Sans Devanagari', 'Sora', sans-serif;
   }
 
   * { box-sizing: border-box; }
@@ -32,8 +33,8 @@
     margin: 0;
     background: var(--bg);
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124,111,239,0.12), transparent),
-      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(45,212,191,0.06), transparent);
+      radial-gradient(ellipse 90% 55% at 50% 105%, rgba(255,138,61,0.10), transparent),
+      radial-gradient(ellipse 60% 40% at 85% -5%, rgba(62,124,184,0.10), transparent);
     color: var(--text);
     font-family: var(--font-body);
     min-height: 100vh;
@@ -46,24 +47,23 @@
   header {
     text-align: center;
     margin-bottom: 40px;
-    max-width: 560px;
+    max-width: 580px;
   }
 
   .eyebrow {
-    font-family: var(--font-body);
     font-size: 12px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--wave);
+    color: var(--tile);
     margin-bottom: 10px;
     font-weight: 600;
   }
 
   h1 {
     font-family: var(--font-display);
-    font-size: 34px;
+    font-size: 38px;
     font-weight: 600;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     letter-spacing: -0.01em;
   }
 
@@ -75,22 +75,18 @@
   .subtitle {
     color: var(--text-muted);
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0;
   }
 
   main {
     width: 100%;
-    max-width: 640px;
+    max-width: 660px;
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
 
-  /* --- Mic control: the signature element. Concentric rings expand
-     outward while recording, echoing a sound wave propagating from
-     the mic — ties the visual identity directly to what the product
-     does, rather than decorating it. --- */
   .mic-stage {
     display: flex;
     flex-direction: column;
@@ -99,7 +95,7 @@
     padding: 36px 20px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   .mic-ring-wrap {
@@ -115,13 +111,11 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 1.5px solid var(--wave);
+    border: 1.5px solid var(--tile);
     opacity: 0;
   }
 
-  .recording .mic-ring {
-    animation: ripple 1.8s ease-out infinite;
-  }
+  .recording .mic-ring { animation: ripple 1.8s ease-out infinite; }
   .recording .mic-ring.r2 { animation-delay: 0.6s; }
   .recording .mic-ring.r3 { animation-delay: 1.2s; }
 
@@ -141,34 +135,30 @@
     height: 76px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(160deg, var(--accent), #5B4FD6);
-    color: white;
+    background: linear-gradient(160deg, var(--accent), #D9661F);
+    color: var(--bg);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 8px 24px rgba(124,111,239,0.35);
+    box-shadow: 0 8px 24px rgba(255,138,61,0.30);
   }
   .mic-btn:hover { transform: scale(1.04); }
   .mic-btn:active { transform: scale(0.97); }
   .recording .mic-btn {
-    background: linear-gradient(160deg, var(--danger), #C74A4A);
-    box-shadow: 0 8px 24px rgba(248,113,113,0.35);
+    background: linear-gradient(160deg, var(--danger), #B0392C);
+    box-shadow: 0 8px 24px rgba(232,93,76,0.30);
   }
 
   .mic-status {
     font-size: 13px;
     color: var(--text-muted);
-    font-family: var(--font-body);
     min-height: 18px;
   }
-  .recording .mic-status { color: var(--wave); }
+  .recording .mic-status { color: var(--tile); }
 
-  .text-fallback {
-    display: flex;
-    gap: 10px;
-  }
+  .text-fallback { display: flex; gap: 10px; }
 
   .text-fallback input {
     flex: 1;
@@ -188,18 +178,16 @@
     color: var(--text);
     border-radius: 10px;
     padding: 0 18px;
-    font-family: var(--font-body);
     font-weight: 600;
     cursor: pointer;
   }
   .text-fallback button:hover { border-color: var(--accent); }
 
-  /* --- Result panel --- */
   .result {
     display: none;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: 18px;
     padding: 24px;
     animation: fade-in 0.25s ease;
   }
@@ -223,9 +211,9 @@
     margin-bottom: 14px;
   }
   .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .badge.answered_fast, .badge.answered_polished { background: rgba(74,222,128,0.12); color: var(--ok); }
-  .badge.abstained { background: rgba(251,191,36,0.12); color: var(--warn); }
-  .badge.blocked, .badge.error { background: rgba(248,113,113,0.12); color: var(--danger); }
+  .badge.answered_fast, .badge.answered_polished { background: rgba(79,209,165,0.12); color: var(--ok); }
+  .badge.abstained { background: rgba(255,180,84,0.12); color: var(--warn); }
+  .badge.blocked, .badge.error { background: rgba(232,93,76,0.12); color: var(--danger); }
 
   .transcript-label {
     font-size: 11px;
@@ -238,7 +226,6 @@
   .transcript {
     font-family: var(--font-deva);
     font-size: 16px;
-    color: var(--text);
     margin: 0 0 18px;
     padding-bottom: 18px;
     border-bottom: 1px solid var(--border);
@@ -250,51 +237,178 @@
     line-height: 1.65;
     margin: 0 0 16px;
   }
-
   .answer.muted { color: var(--text-muted); font-family: var(--font-body); font-size: 15px; }
 
-  /* Grounding meter - the one place the underlying gate score is made
-     visible, since that gate is the actual technical differentiator. */
-  .grounding-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  .grounding-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-  .grounding-track {
-    flex: 1;
-    height: 6px;
-    background: var(--surface-raised);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .grounding-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.4s ease;
-  }
-  .grounding-score { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-muted); }
+  .grounding-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .grounding-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .grounding-track { flex: 1; height: 6px; background: var(--surface-raised); border-radius: 999px; overflow: hidden; }
+  .grounding-fill { height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+  .grounding-score { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
 
-  .latency-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
+  .latency-strip { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-muted); }
   .latency-chip {
     background: var(--surface-raised);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 4px 10px;
-    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
   }
-  .latency-chip strong { color: var(--text); font-weight: 600; }
+  .latency-chip strong { color: var(--text); font-weight: 500; }
+
+  /* --- Live benchmark panel: the tide gauge --- */
+  .bench-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+  }
+
+  .bench-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .bench-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .bench-desc {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 18px;
+  }
+
+  .bench-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .bench-controls label {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .bench-controls input[type="number"] {
+    width: 64px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .bench-run-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .bench-run-btn:hover { opacity: 0.88; }
+  .bench-run-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .bench-status {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .bench-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .bench-stat {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .bench-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .bench-stat-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .bench-stat-value.under { color: var(--ok); }
+  .bench-stat-value.over { color: var(--danger); }
+
+  /* Tide gauge: each bar is one real request's latency, rising from
+     a baseline like a wave. The dashed line marks the 200ms budget. */
+  .tide-gauge {
+    position: relative;
+    height: 140px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px 8px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    overflow: hidden;
+  }
+
+  .tide-empty {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: auto;
+  }
+
+  .tide-budget-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgba(243,236,221,0.25);
+    display: flex;
+    align-items: center;
+  }
+
+  .tide-budget-label {
+    position: absolute;
+    right: 8px;
+    top: -16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .tide-bar {
+    flex: 1 0 3px;
+    max-width: 10px;
+    min-height: 2px;
+    border-radius: 2px 2px 0 0;
+    background: var(--ok);
+    transition: height 0.2s ease;
+  }
+  .tide-bar.over { background: var(--danger); }
 
   footer {
     margin-top: 48px;
@@ -320,7 +434,7 @@
       <div class="mic-ring r2"></div>
       <div class="mic-ring r3"></div>
       <button class="mic-btn" id="micBtn" aria-label="Start recording">
-        <svg id="micIcon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg id="micIcon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
           <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -353,6 +467,31 @@
     </div>
 
     <div class="latency-strip" id="latencyStrip"></div>
+  </div>
+
+  <div class="bench-panel">
+    <div class="bench-head">
+      <p class="bench-title">Live latency benchmark</p>
+    </div>
+    <p class="bench-desc">Fires real requests at this deployed server right now and measures actual response times — not a screenshot of a past run.</p>
+
+    <div class="bench-controls">
+      <label for="benchCount">Requests</label>
+      <input type="number" id="benchCount" value="20" min="5" max="50" step="1" />
+      <button class="bench-run-btn" id="benchRunBtn">Run benchmark</button>
+      <span class="bench-status" id="benchStatus"></span>
+    </div>
+
+    <div class="bench-stats" id="benchStats" style="display:none">
+      <div class="bench-stat"><div class="bench-stat-label">P50</div><div class="bench-stat-value" id="statP50">—</div></div>
+      <div class="bench-stat"><div class="bench-stat-label">P70</div><div class="bench-stat-value" id="statP70">—</div></div>
+      <div class="bench-stat"><div class="bench-stat-label">P90</div><div class="bench-stat-value" id="statP90">—</div></div>
+      <div class="bench-stat"><div class="bench-stat-label">P100</div><div class="bench-stat-value" id="statP100">—</div></div>
+    </div>
+
+    <div class="tide-gauge" id="tideGauge">
+      <span class="tide-empty" id="tideEmpty">Run the benchmark to see the live spread</span>
+    </div>
   </div>
 </main>
 
@@ -522,6 +661,105 @@ function submitText() {
 }
 sendBtn.addEventListener('click', submitText);
 textInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitText(); });
+
+// --- Live benchmark: fires real requests at this deployed server,
+// measures actual response latency, computes percentiles client-side.
+// Sequential, not parallel - matches how the offline harness measured
+// P50/P70/P100, and avoids hammering a small free-tier instance with
+// concurrent CPU-bound embedding calls competing for the same core. ---
+const BENCH_QUERY = 'मैनहट्टन परियोजना की सफलता का प्रभाव क्या था?';
+const BENCH_BUDGET_MS = 200;
+
+const benchRunBtn = document.getElementById('benchRunBtn');
+const benchCountInput = document.getElementById('benchCount');
+const benchStatus = document.getElementById('benchStatus');
+const benchStats = document.getElementById('benchStats');
+const tideGauge = document.getElementById('tideGauge');
+const tideEmpty = document.getElementById('tideEmpty');
+
+function percentile(sorted, p) {
+  if (sorted.length === 0) return null;
+  const idx = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
+  return sorted[Math.max(0, idx)];
+}
+
+function renderTideGauge(samples) {
+  tideGauge.innerHTML = '';
+  if (samples.length === 0) {
+    tideGauge.appendChild(tideEmpty);
+    return;
+  }
+
+  const maxMs = Math.max(...samples, BENCH_BUDGET_MS * 1.15);
+  const budgetPct = (BENCH_BUDGET_MS / maxMs) * 100;
+
+  const budgetLine = document.createElement('div');
+  budgetLine.className = 'tide-budget-line';
+  budgetLine.style.bottom = budgetPct + '%';
+  const budgetLabel = document.createElement('span');
+  budgetLabel.className = 'tide-budget-label';
+  budgetLabel.textContent = '200ms budget';
+  budgetLine.appendChild(budgetLabel);
+  tideGauge.appendChild(budgetLine);
+
+  for (const ms of samples) {
+    const bar = document.createElement('div');
+    bar.className = 'tide-bar' + (ms > BENCH_BUDGET_MS ? ' over' : '');
+    bar.style.height = Math.max(2, (ms / maxMs) * 100) + '%';
+    bar.title = ms.toFixed(0) + 'ms';
+    tideGauge.appendChild(bar);
+  }
+}
+
+function setStat(id, value, budget) {
+  const el = document.getElementById(id);
+  if (value === null) { el.textContent = '—'; el.className = 'bench-stat-value'; return; }
+  el.textContent = Math.round(value) + 'ms';
+  el.className = 'bench-stat-value ' + (value <= budget ? 'under' : 'over');
+}
+
+async function runBenchmark() {
+  const n = Math.max(5, Math.min(50, parseInt(benchCountInput.value, 10) || 20));
+  benchRunBtn.disabled = true;
+  benchStats.style.display = 'none';
+  const samples = [];
+  let failed = 0;
+
+  for (let i = 0; i < n; i++) {
+    benchStatus.textContent = `Sent ${i + 1}/${n}…`;
+    try {
+      const res = await fetch(`${API_BASE}/api/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: BENCH_QUERY, mode: 'fast' }),
+      });
+      const data = await res.json();
+      const lat = data.latency || {};
+      const ms = typeof lat.fast_path_total_ms === 'number' ? lat.fast_path_total_ms
+               : typeof lat.total_ms === 'number' ? lat.total_ms
+               : null;
+      if (ms !== null) samples.push(ms);
+      else failed++;
+    } catch (e) {
+      failed++;
+    }
+    renderTideGauge(samples);
+  }
+
+  const sorted = [...samples].sort((a, b) => a - b);
+  benchStats.style.display = 'grid';
+  setStat('statP50', percentile(sorted, 50), BENCH_BUDGET_MS);
+  setStat('statP70', percentile(sorted, 70), BENCH_BUDGET_MS);
+  setStat('statP90', percentile(sorted, 90), BENCH_BUDGET_MS);
+  setStat('statP100', percentile(sorted, 100), BENCH_BUDGET_MS);
+
+  benchStatus.textContent = failed > 0
+    ? `${samples.length}/${n} succeeded, ${failed} failed`
+    : `${samples.length}/${n} requests, done`;
+  benchRunBtn.disabled = false;
+}
+
+benchRunBtn.addEventListener('click', runBenchmark);
 </script>
 
 </body>
